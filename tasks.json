@@ -1,0 +1,14 @@
+{
+    "tasks": [
+        {
+            "name": "Piano",
+            "duration": "60",
+            "times_in_week": "3"
+        },
+        {
+            "name": "Zaryadka",
+            "duration": "60",
+            "times_in_week": "2"
+        }
+    ]
+}

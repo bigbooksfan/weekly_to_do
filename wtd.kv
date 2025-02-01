@@ -1,0 +1,137 @@
+<MainScreen>:
+    name: "main_screen"
+    GridLayout:
+        cols: 1
+        size_hint: (1, 1)
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                text: 'To do:'
+                text_size: self.size
+                halign: 'left'
+                size_hint: (1, None)
+                height: 30
+
+            GridLayout:
+                cols: 1
+                id: tasks
+            
+            Label:
+                text: 'Done:'
+                text_size: self.size
+                halign: 'left'
+                size_hint: (1, None)
+                height: 30
+            
+            GridLayout:
+                clos: 1
+                id: tasks_done
+
+
+        GridLayout:
+            id: menu_buttons
+            rows: 1
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: "Edit task list"
+                on_release:
+                    app.root.current = "edit_task_list"
+                    root.manager.transition.direction = "left"
+            
+            Button:
+                text: "Settings"
+                id: settings
+
+<EditTaskList>:
+    name: "edit_task_list"
+    on_enter:
+        root.LoadTasks()
+    GridLayout:
+        cols: 1
+        size_hint: (1, 1)
+
+        Label:
+            text: 'List of tasks:'
+            size_hint: (1, None)
+            height: 30
+
+        GridLayout:
+            cols: 1
+            id: tasks_list
+        
+        GridLayout:
+            rows: 1
+            name: 'menu buttons'
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: 'Add new task'
+                on_release:
+                    app.root.current = "add_task_screen"
+                    root.manager.transition.direction = "left"
+            
+            Button:
+                text: 'Done'
+                on_release:
+                    app.root.current = "main_screen"
+                    root.manager.transition.direction = "right"
+
+
+<AddTaskScreen>:
+    name: "add_task_screen"
+
+    task_name: task_name
+    task_duration: task_duration
+    task_times: task_times
+
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            
+            Label:
+                text: 'Enter name:'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_name
+                multiline: False
+            Label:
+                text: 'Enter duration (mins):'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_duration
+                multiline: False
+            Label:
+                text: 'Enter number of repeats:'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_times
+                multiline: False
+            
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: "Add task"
+                on_release:
+                    root.add_new_task()
+                    app.root.current = "edit_task_list"
+                    root.manager.transition.direction = "right"
+            
+            Button:
+                text: "Cancel"
+                on_release:
+                    app.root.current = "edit_task_list"
+                    root.manager.transition.direction = "right"
