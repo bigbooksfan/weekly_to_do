@@ -1,5 +1,12 @@
+<DummyScreen>:
+    name: "dummy_screen"    
+    Label:
+        text: "This is Dummy Screen"
+
 <MainScreen>:
     name: "main_screen"
+    on_enter:
+        root.LoadTasks()
     GridLayout:
         cols: 1
         size_hint: (1, 1)
@@ -8,7 +15,7 @@
             cols: 1
 
             Label:
-                text: 'To do:'
+                text: 'This week progress:'
                 text_size: self.size
                 halign: 'left'
                 size_hint: (1, None)
@@ -17,18 +24,17 @@
             GridLayout:
                 cols: 1
                 id: tasks
-            
+
             Label:
-                text: 'Done:'
+                text: 'Tasks done:'
                 text_size: self.size
                 halign: 'left'
                 size_hint: (1, None)
                 height: 30
-            
-            GridLayout:
-                clos: 1
-                id: tasks_done
 
+            GridLayout:
+                cols: 1
+                id: finished_tasks
 
         GridLayout:
             id: menu_buttons

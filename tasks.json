@@ -9,6 +9,22 @@
             "name": "Zaryadka",
             "duration": "60",
             "times_in_week": "2"
+        },
+        {
+            "name": "Finished task",
+            "duration": "30",
+            "times_in_week": "1"
+        },
+        {
+            "name": "qqw",
+            "duration": "1",
+            "times_in_week": "2"
+        }
+    ],
+    "this_week_tasks": [
+        {
+            "name": "Finished task",
+            "done": "1"
         }
     ]
 }
