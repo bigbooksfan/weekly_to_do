@@ -3,7 +3,7 @@ from functools import partial
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import Screen, ScreenManager, FadeTransition
+from kivy.uix.screenmanager import Screen, ScreenManager, FadeTransition, SlideTransition
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -15,8 +15,9 @@ class DummyScreen(Screen):
         Clock.schedule_once(self.switch_screen)
     
     def switch_screen(self, dt):
-        #sm.transition = FadeTransition()
+        sm.transition = FadeTransition()
         sm.current = "main_screen"
+        sm.transition = SlideTransition()
 
 class MainScreen(Screen):
     def LoadTasks(self):
@@ -68,7 +69,6 @@ class MainScreen(Screen):
                 }
                 finished_tasks.append(new_task)
 
-        print(tasks_list)
         for task in tasks_list:
             new_task = GridLayout(cols=4, height=50, size_hint=(1,None))
             new_task.add_widget(Label(text=task['name']))
@@ -82,6 +82,7 @@ class MainScreen(Screen):
                     size_hint=(None, None))
             new_task.add_widget(start_button)
             #start_button.bind(on_release=partial(self.RemoveTask, task['name']))
+            start_button.bind(on_release=partial(self.StartTimer, task['name']))
             tasks.add_widget(new_task)
 
         for task in finished_tasks:
@@ -93,7 +94,11 @@ class MainScreen(Screen):
             
             finished_tasks_list.add_widget(new_task)
 
-
+    def StartTimer(self, name, instance):
+        print('timer start for ' + name)
+        sm.transition.direction='up'
+        sm.current = "timer_screen"
+        
 class EditTaskList(Screen):
     def RemoveTask(self, name, instance):
         new_data = json.loads("{ \"tasks\": []}")
@@ -164,6 +169,31 @@ class AddTaskScreen(Screen):
             json.dump(data, file, indent=4)
             file.close()
  
+class CountDown(Label):
+    # counter = 60
+    # def update(self, *args):
+    #     if self.counter > 0:
+    #         self.text = str(self.counter - 1)
+    #         self.counter -= 1
+    #     else:
+    #         self.text = "Done!"
+    #global t
+    #t -= 1
+    pass
+
+t = 30
+
+def my_callback(screen, dt):
+    global t
+    t -= 1
+    screen.ids.countdown_timer.text = str(t)
+
+class TimerScreen(Screen):
+
+    def start_timer(self):
+        Clock.schedule_interval(partial(my_callback, self), 1)
+    
+
 class WindowManager(ScreenManager):
     pass
 
@@ -174,6 +204,7 @@ sm.add_widget(DummyScreen(name='dummy_screen'))
 sm.add_widget(MainScreen(name='main_screen'))
 sm.add_widget(EditTaskList(name='edit_task_list'))
 sm.add_widget(AddTaskScreen(name='add_task_screen'))
+sm.add_widget(TimerScreen(name='timer_screen'))
 
 sm.current = "dummy_screen"
 

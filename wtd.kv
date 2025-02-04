@@ -141,3 +141,32 @@
                 on_release:
                     app.root.current = "edit_task_list"
                     root.manager.transition.direction = "right"
+
+<TimerScreen>:
+    name: "timer_screen"
+    on_enter:
+        root.start_timer()
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "countdown timer"
+        
+        Label:
+            id: countdown_timer
+        
+        GridLayout:
+            id: buttons_inder_timer
+            rows: 1
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: "Finish task"
+            
+            Button:
+                text: "Cancel task"
+                on_release:
+                    app.root.current = "main_screen"
+                    root.manager.transition.direction = "down"
