@@ -10,6 +10,8 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
+task_name_to_edit = ""
+
 class DummyScreen(Screen):
     def on_enter(self):
         Clock.schedule_once(self.switch_screen)
@@ -28,9 +30,11 @@ class MainScreen(Screen):
 
         with open('tasks.json', 'r') as file:
             data = json.load(file)
-        
+        with open('this_week.json', 'r') as file2:
+            weekly_data = json.load(file2)
+
         week_tasks = data['tasks']
-        done_tasks = data['this_week_tasks']
+        done_tasks = weekly_data['this_week_tasks']
 
         tasks_list = []
         task_names = []
@@ -111,13 +115,20 @@ class EditTaskList(Screen):
             if data['tasks'][i]['name'] != name:
                 new_data['tasks'].append(data['tasks'][i])
         
-        new_data.append(data['this_week_tasks'])
+        #new_data['this_week_tasks'] = data['this_week_tasks']
                 
         with open('tasks.json', 'w') as file:
             json.dump(new_data, file, indent=4)
             file.close()
         
         self.LoadTasks()
+    
+    def EditTask(self, name, instance):
+        global task_name_to_edit
+        task_name_to_edit = name
+        print("edit called with name {}".format(name))
+        sm.transition.direction='left'
+        sm.current = "edit_task_screen"
 
     def LoadTasks(self):
         tasks = self.ids.tasks_list
@@ -137,6 +148,7 @@ class EditTaskList(Screen):
                     size=(50,50), 
                     size_hint=(None, None))
             new_task.add_widget(edit_button)
+            edit_button.bind(on_release=partial(self.EditTask, task['name']))
             
             delete_button = Button(
                     text='Delete', 
@@ -144,20 +156,22 @@ class EditTaskList(Screen):
                     size_hint=(None, None))
             new_task.add_widget(delete_button)
             delete_button.bind(on_release=partial(self.RemoveTask, task['name']))
+
             tasks.add_widget(new_task)
 
         file.close()
 
 class AddTaskScreen(Screen):
-    task_name = ObjectProperty(None)
-    task_duration = ObjectProperty(None)
-    task_times = ObjectProperty(None)
+    def ClearForm(self):
+        self.ids.task_name.text = ""
+        self.ids.task_duration.text = ""
+        self.ids.task_times.text = ""
 
     def add_new_task(self):
         new_task = {
-            "name": self.task_name.text,
-            "duration": self.task_duration.text,
-            "times_in_week": self.task_times.text
+            "name": self.ids.task_name.text,
+            "duration": self.ids.task_duration.text,
+            "times_in_week": self.ids.task_times.text
         }
         # TODO: add check if name not unique
         with open('tasks.json', 'r') as file:
@@ -168,7 +182,43 @@ class AddTaskScreen(Screen):
         with open('tasks.json', 'w') as file:
             json.dump(data, file, indent=4)
             file.close()
- 
+
+class EditTaskScreen(Screen):
+    def FillForm(self):
+        print("Enter FillForm")
+        global task_name_to_edit
+        with open('tasks.json', 'r') as file:
+            data = json.load(file)
+            file.close()
+        for task in data['tasks']:
+            if task['name'] == task_name_to_edit:
+                self.ids.task_name.text = task['name']
+                self.ids.task_duration.text = task['duration']
+                self.ids.task_times.text = task['times_in_week']
+    
+    def edit_task(self):
+        global task_name_to_edit
+        with open('tasks.json', 'r') as file:
+            data = json.load(file)
+            file.close()
+        
+        new_data = json.loads("{ \"tasks\": []}")
+        for task in data['tasks']:
+            if task['name'] == task_name_to_edit:
+                new_task = {
+                    "name": self.ids.task_name.text,
+                    "duration": self.ids.task_duration.text,
+                    "times_in_week": self.ids.task_times.text
+                    }
+                new_data['tasks'].append(new_task)
+            else:
+                new_data['tasks'].append(task)
+        
+        with open('tasks.json', 'w') as file:
+            json.dump(new_data, file, indent=4)
+            file.close()
+
+        
 class CountDown(Label):
     # counter = 60
     # def update(self, *args):
@@ -204,6 +254,7 @@ sm.add_widget(DummyScreen(name='dummy_screen'))
 sm.add_widget(MainScreen(name='main_screen'))
 sm.add_widget(EditTaskList(name='edit_task_list'))
 sm.add_widget(AddTaskScreen(name='add_task_screen'))
+sm.add_widget(EditTaskScreen(name='edit_task_screen'))
 sm.add_widget(TimerScreen(name='timer_screen'))
 
 sm.current = "dummy_screen"

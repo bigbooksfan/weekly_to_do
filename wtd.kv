@@ -91,9 +91,8 @@
 <AddTaskScreen>:
     name: "add_task_screen"
 
-    task_name: task_name
-    task_duration: task_duration
-    task_times: task_times
+    on_enter:
+        self.ClearForm()
 
     GridLayout:
         cols: 1
@@ -133,6 +132,58 @@
                 text: "Add task"
                 on_release:
                     root.add_new_task()
+                    app.root.current = "edit_task_list"
+                    root.manager.transition.direction = "right"
+            
+            Button:
+                text: "Cancel"
+                on_release:
+                    app.root.current = "edit_task_list"
+                    root.manager.transition.direction = "right"
+
+<EditTaskScreen>:
+    name: "edit_task_screen"
+
+    on_enter:
+        self.FillForm()
+        
+    GridLayout:
+        cols: 1
+
+        GridLayout:
+            cols: 1
+            
+            Label:
+                text: 'Name:'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_name
+                multiline: False
+            Label:
+                text: 'Duration (mins):'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_duration
+                multiline: False
+            Label:
+                text: 'Number of repeats:'
+                size_hint: (1, None)
+                height: 30
+            TextInput:
+                id: task_times
+                multiline: False
+            
+        GridLayout:
+            rows: 1
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: "Save changes"
+                on_release:
+                    root.edit_task()
                     app.root.current = "edit_task_list"
                     root.manager.transition.direction = "right"
             

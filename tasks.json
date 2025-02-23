@@ -16,15 +16,14 @@
             "times_in_week": "1"
         },
         {
-            "name": "qqw",
-            "duration": "1",
-            "times_in_week": "2"
-        }
-    ],
-    "this_week_tasks": [
+            "name": "wwwwqqq",
+            "duration": "22",
+            "times_in_week": "1"
+        },
         {
-            "name": "Finished task",
-            "done": "1"
+            "name": "dddss",
+            "duration": "33",
+            "times_in_week": "1"
         }
     ]
 }
