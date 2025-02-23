@@ -205,6 +205,9 @@
             text: "countdown timer"
         
         Label:
+            id: task_name
+        
+        Label:
             id: countdown_timer
         
         GridLayout:
@@ -219,5 +222,6 @@
             Button:
                 text: "Cancel task"
                 on_release:
+                    root.cancel_timer()
                     app.root.current = "main_screen"
                     root.manager.transition.direction = "down"

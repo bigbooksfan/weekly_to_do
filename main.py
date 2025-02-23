@@ -11,6 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
 task_name_to_edit = ""
+task_name_to_start = ""
 
 class DummyScreen(Screen):
     def on_enter(self):
@@ -99,7 +100,8 @@ class MainScreen(Screen):
             finished_tasks_list.add_widget(new_task)
 
     def StartTimer(self, name, instance):
-        print('timer start for ' + name)
+        global task_name_to_start
+        task_name_to_start = name
         sm.transition.direction='up'
         sm.current = "timer_screen"
         
@@ -126,7 +128,6 @@ class EditTaskList(Screen):
     def EditTask(self, name, instance):
         global task_name_to_edit
         task_name_to_edit = name
-        print("edit called with name {}".format(name))
         sm.transition.direction='left'
         sm.current = "edit_task_screen"
 
@@ -185,7 +186,6 @@ class AddTaskScreen(Screen):
 
 class EditTaskScreen(Screen):
     def FillForm(self):
-        print("Enter FillForm")
         global task_name_to_edit
         with open('tasks.json', 'r') as file:
             data = json.load(file)
@@ -195,6 +195,7 @@ class EditTaskScreen(Screen):
                 self.ids.task_name.text = task['name']
                 self.ids.task_duration.text = task['duration']
                 self.ids.task_times.text = task['times_in_week']
+                break
     
     def edit_task(self):
         global task_name_to_edit
@@ -218,31 +219,42 @@ class EditTaskScreen(Screen):
             json.dump(new_data, file, indent=4)
             file.close()
 
-        
-class CountDown(Label):
-    # counter = 60
-    # def update(self, *args):
-    #     if self.counter > 0:
-    #         self.text = str(self.counter - 1)
-    #         self.counter -= 1
-    #     else:
-    #         self.text = "Done!"
-    #global t
-    #t -= 1
-    pass
-
-t = 30
-
-def my_callback(screen, dt):
-    global t
-    t -= 1
-    screen.ids.countdown_timer.text = str(t)
-
 class TimerScreen(Screen):
+    mins = 1
+    secs = 0
+    timer = None
 
-    def start_timer(self):
-        Clock.schedule_interval(partial(my_callback, self), 1)
+    def update_clock(screen, dt):
+        TimerScreen.secs -= 1
+        if TimerScreen.secs == -1:
+            TimerScreen.mins -= 1
+            TimerScreen.secs = 59
+        if TimerScreen.mins < 0:
+            TimerScreen.timer.cancel()
+            screen.ids.countdown_timer.text = 'Done'
+            return
+        timer = '{}:{}'.format(TimerScreen.mins, TimerScreen.secs)
+        screen.ids.countdown_timer.text = timer
     
+    def cancel_timer(self):
+        TimerScreen.timer.cancel()
+    
+    def start_timer(self):
+        TimerScreen.secs = 0
+        global task_name_to_start
+
+        with open('tasks.json', 'r') as file:
+            data = json.load(file)
+            file.close()
+
+        for task in data['tasks']:
+            if task['name'] == task_name_to_start:
+                TimerScreen.mins = int(task['duration'])
+                break
+
+        self.ids.task_name.text = task_name_to_start
+        self.ids.countdown_timer.text = '{}:00'.format(TimerScreen.mins)
+        TimerScreen.timer = Clock.schedule_interval(partial(self.update_clock), 1)            
 
 class WindowManager(ScreenManager):
     pass
