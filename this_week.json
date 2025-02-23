@@ -2,7 +2,15 @@
     "this_week_tasks": [
         {
             "name": "Finished task",
-            "done": "1"
+            "done": 3
+        },
+        {
+            "name": "qqaaaaa",
+            "done": 6
+        },
+        {
+            "name": "dddss",
+            "done": 1
         }
     ]
 }

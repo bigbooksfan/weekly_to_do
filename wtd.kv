@@ -218,6 +218,12 @@
 
             Button:
                 text: "Finish task"
+                on_release:
+                    root.cancel_timer()
+                    root.finish_task()
+                    root.manager.transition.direction = "down"
+                    app.root.current = "main_screen"
+                    
             
             Button:
                 text: "Cancel task"

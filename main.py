@@ -31,8 +31,10 @@ class MainScreen(Screen):
 
         with open('tasks.json', 'r') as file:
             data = json.load(file)
+            file.close()
         with open('this_week.json', 'r') as file2:
             weekly_data = json.load(file2)
+            file2.close()
 
         week_tasks = data['tasks']
         done_tasks = weekly_data['this_week_tasks']
@@ -46,13 +48,13 @@ class MainScreen(Screen):
                 "name": task_to_do['name'],
                 "duration": task_to_do['duration'],
                 "times_to_do": task_to_do['times_in_week'],
-                "times_done": "0"
+                "times_done": 0
             }
             task_names.append(task_to_do['name'])
             for task_done in done_tasks:
                 if task_done['name'] == task_to_do['name']:
                     new_task['times_done'] = task_done['done']
-            if new_task['times_to_do'] == new_task['times_done']:
+            if new_task['times_to_do'] <= new_task['times_done']:
                 finished_tasks.append({
                     "name": task_to_do['name'],
                     "times_done": 
@@ -255,6 +257,30 @@ class TimerScreen(Screen):
         self.ids.task_name.text = task_name_to_start
         self.ids.countdown_timer.text = '{}:00'.format(TimerScreen.mins)
         TimerScreen.timer = Clock.schedule_interval(partial(self.update_clock), 1)            
+
+    def finish_task(self):
+        with open('this_week.json', 'r') as file:
+            data = json.load(file)
+            file.close()
+
+        flag = False
+        for task in data['this_week_tasks']:
+            if task['name'] == task_name_to_start:
+                task['done'] += 1
+                flag = True
+                break
+        
+        if flag is False:
+            new_task = {
+                "name": task_name_to_start,
+                "done": 1
+            }
+            data['this_week_tasks'].append(new_task)
+        
+        with open('this_week.json', 'w') as file:
+            json.dump(data, file, indent=4)
+            file.close()
+
 
 class WindowManager(ScreenManager):
     pass
