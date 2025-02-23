@@ -19,6 +19,11 @@
             "name": "qqaaaaa",
             "duration": 33,
             "times_in_week": 21
+        },
+        {
+            "name": "new task",
+            "duration": 23,
+            "times_in_week": 3
         }
     ]
 }

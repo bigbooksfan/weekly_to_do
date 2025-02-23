@@ -173,8 +173,8 @@ class AddTaskScreen(Screen):
     def add_new_task(self):
         new_task = {
             "name": self.ids.task_name.text,
-            "duration": self.ids.task_duration.text,
-            "times_in_week": self.ids.task_times.text
+            "duration": int(self.ids.task_duration.text),
+            "times_in_week": int(self.ids.task_times.text)
         }
         # TODO: add check if name not unique
         with open('tasks.json', 'r') as file:
@@ -195,8 +195,8 @@ class EditTaskScreen(Screen):
         for task in data['tasks']:
             if task['name'] == task_name_to_edit:
                 self.ids.task_name.text = task['name']
-                self.ids.task_duration.text = task['duration']
-                self.ids.task_times.text = task['times_in_week']
+                self.ids.task_duration.text = str(task['duration'])
+                self.ids.task_times.text = str(task['times_in_week'])
                 break
     
     def edit_task(self):
@@ -210,8 +210,8 @@ class EditTaskScreen(Screen):
             if task['name'] == task_name_to_edit:
                 new_task = {
                     "name": self.ids.task_name.text,
-                    "duration": self.ids.task_duration.text,
-                    "times_in_week": self.ids.task_times.text
+                    "duration": int(self.ids.task_duration.text),
+                    "times_in_week": int(self.ids.task_times.text)
                     }
                 new_data['tasks'].append(new_task)
             else:
