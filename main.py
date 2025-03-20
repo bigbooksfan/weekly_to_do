@@ -1,5 +1,6 @@
 import json
 from functools import partial
+from datetime import date
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -17,7 +18,34 @@ class DummyScreen(Screen):
     def on_enter(self):
         Clock.schedule_once(self.switch_screen)
     
+    def check_files(self):
+        try:
+            with open('this_week.json', 'r') as file:
+                pass
+        except FileNotFoundError:
+            dummy_json = {
+                'this_week_tasks': [],
+                'start_date': str(date.today())
+            }
+            
+            with open('this_week.json', 'w') as file:
+                json.dump(dummy_json, file, indent=4)
+                file.close()
+        
+        try:
+            with open('tasks.json', 'r') as file:
+                pass
+        except FileNotFoundError:
+            dummy_json = {
+                'tasks': []
+            }
+            
+            with open('tasks.json', 'w') as file:
+                json.dump(dummy_json, file, indent=4)
+                file.close()
+    
     def switch_screen(self, dt):
+        self.check_files()
         sm.transition = FadeTransition()
         sm.current = "main_screen"
         sm.transition = SlideTransition()
@@ -281,6 +309,8 @@ class TimerScreen(Screen):
             json.dump(data, file, indent=4)
             file.close()
 
+class SettingsScreen(Screen):
+    pass
 
 class WindowManager(ScreenManager):
     pass
@@ -294,6 +324,7 @@ sm.add_widget(EditTaskList(name='edit_task_list'))
 sm.add_widget(AddTaskScreen(name='add_task_screen'))
 sm.add_widget(EditTaskScreen(name='edit_task_screen'))
 sm.add_widget(TimerScreen(name='timer_screen'))
+sm.add_widget(SettingsScreen(name='settings_screen'))
 
 sm.current = "dummy_screen"
 

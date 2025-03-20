@@ -51,6 +51,9 @@
             Button:
                 text: "Settings"
                 id: settings
+                on_release:
+                    root.manager.transition.direction = "left"
+                    app.root.current = "settings_screen"
 
 <EditTaskList>:
     name: "edit_task_list"
@@ -231,3 +234,35 @@
                     root.cancel_timer()
                     app.root.current = "main_screen"
                     root.manager.transition.direction = "down"
+
+<SettingsScreen>:
+    name: "settings_screen"
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text: "Settings"
+            size_hint: (1, None)
+            height: 30
+        
+        GridLayout:
+            id: setting_buttons
+            cols: 1
+
+            Button:
+                text: "Finish week"
+                size_hint: (1, None)
+                height: 50
+        
+        GridLayout:
+            id: back_buttons
+            rows: 1
+            size_hint: (1, None)
+            height: 50
+
+            Button:
+                text: "Back"
+                on_release:
+                    root.manager.transition.direction = "right"
+                    app.root.current = "main_screen"
