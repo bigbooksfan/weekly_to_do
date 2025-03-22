@@ -1,0 +1,32 @@
+[
+    {
+        "this_week_tasks": [
+            {
+                "name": "Finished task",
+                "done": 3
+            },
+            {
+                "name": "qqaaaaa",
+                "done": 8
+            },
+            {
+                "name": "dddss",
+                "done": 1
+            },
+            {
+                "name": "new task",
+                "done": 2
+            }
+        ],
+        "start_date": "2025-03-20"
+    },
+    {
+        "this_week_tasks": [
+            {
+                "name": "qqaaaaa",
+                "done": 1
+            }
+        ],
+        "start_date": "2025-03-22"
+    }
+]

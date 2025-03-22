@@ -21,7 +21,7 @@ class DummyScreen(Screen):
     def check_files(self):
         try:
             with open('this_week.json', 'r') as file:
-                pass
+                file.close()
         except FileNotFoundError:
             dummy_json = {
                 'this_week_tasks': [],
@@ -34,7 +34,7 @@ class DummyScreen(Screen):
         
         try:
             with open('tasks.json', 'r') as file:
-                pass
+                file.close()
         except FileNotFoundError:
             dummy_json = {
                 'tasks': []
@@ -310,7 +310,39 @@ class TimerScreen(Screen):
             file.close()
 
 class SettingsScreen(Screen):
-    pass
+    def close_week(self):
+        history = []
+        try:
+            with open('history.json', 'r') as file:
+                data = json.load(file)
+                for row in data:
+                    history.append(row)
+                file.close()
+        except FileNotFoundError:
+            with open('history.json', 'w') as file:
+                json.dump(history, file, indent=4)
+                file.close()
+        
+        this_week_results = {}
+        with open ('this_week.json', 'r') as file:
+            data = json.load(file)
+            file.close()
+            this_week_results = data
+        
+        history.append(this_week_results)
+
+        with open('history.json', 'w') as file:
+            json.dump(history, file, indent=4)
+            file.close()
+        
+        with open('this_week.json', 'w') as file:
+            dummy_json = {
+                'this_week_tasks': [],
+                'start_date': str(date.today())
+            }
+            json.dump(dummy_json, file, indent=4)
+            file.close()
+            
 
 class WindowManager(ScreenManager):
     pass
