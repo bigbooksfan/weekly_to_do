@@ -8,7 +8,6 @@ from kivy.uix.screenmanager import Screen, ScreenManager, FadeTransition, SlideT
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
 task_name_to_edit = ""
@@ -105,7 +104,7 @@ class MainScreen(Screen):
                 finished_tasks.append(new_task)
 
         for task in tasks_list:
-            new_task = GridLayout(cols=4, height=50, size_hint=(1,None))
+            new_task = GridLayout(cols=4, height=200, size_hint=(1,None))
             new_task.add_widget(Label(text=task['name']))
             
             desc = '{} minutes, done {}/{} times'.format(task['duration'], task['times_done'], task['times_to_do'])
@@ -113,7 +112,7 @@ class MainScreen(Screen):
             
             start_button = Button(
                     text='Start', 
-                    size=(50,50), 
+                    size=(200,200), 
                     size_hint=(None, None))
             new_task.add_widget(start_button)
             #start_button.bind(on_release=partial(self.RemoveTask, task['name']))
@@ -121,7 +120,7 @@ class MainScreen(Screen):
             tasks.add_widget(new_task)
 
         for task in finished_tasks:
-            new_task = GridLayout(cols=4, height=50, size_hint=(1,None))
+            new_task = GridLayout(cols=4, height=200, size_hint=(1,None))
             new_task.add_widget(Label(text=task['name']))
             
             desc = 'Finished! Done {} times'.format(task['times_done'])
@@ -168,7 +167,7 @@ class EditTaskList(Screen):
             data = json.load(file)
 
         for task in data['tasks']:
-            new_task = GridLayout(cols=4, height=50, size_hint=(1,None))
+            new_task = GridLayout(cols=4, height=200, size_hint=(1,None))
             new_task.add_widget(Label(text=task['name']))
             
             desc = '{} minutes, {} times'.format(task['duration'], task['times_in_week'])
@@ -176,14 +175,14 @@ class EditTaskList(Screen):
             
             edit_button = Button(
                     text='Edit', 
-                    size=(50,50), 
+                    size=(200,200), 
                     size_hint=(None, None))
             new_task.add_widget(edit_button)
             edit_button.bind(on_release=partial(self.EditTask, task['name']))
             
             delete_button = Button(
                     text='Delete', 
-                    size=(50,50), 
+                    size=(200,200), 
                     size_hint=(None, None))
             new_task.add_widget(delete_button)
             delete_button.bind(on_release=partial(self.RemoveTask, task['name']))

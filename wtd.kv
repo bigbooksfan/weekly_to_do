@@ -19,7 +19,7 @@
                 text_size: self.size
                 halign: 'left'
                 size_hint: (1, None)
-                height: 30
+                height: 120
 
             GridLayout:
                 cols: 1
@@ -30,7 +30,7 @@
                 text_size: self.size
                 halign: 'left'
                 size_hint: (1, None)
-                height: 30
+                height: 120
 
             GridLayout:
                 cols: 1
@@ -40,7 +40,7 @@
             id: menu_buttons
             rows: 1
             size_hint: (1, None)
-            height: 50
+            height: 200
 
             Button:
                 text: "Edit task list"
@@ -66,7 +66,7 @@
         Label:
             text: 'List of tasks:'
             size_hint: (1, None)
-            height: 30
+            height: 120
 
         GridLayout:
             cols: 1
@@ -76,7 +76,7 @@
             rows: 1
             name: 'menu buttons'
             size_hint: (1, None)
-            height: 50
+            height: 200
 
             Button:
                 text: 'Add new task'
@@ -110,26 +110,32 @@
             TextInput:
                 id: task_name
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             Label:
                 text: 'Enter duration (mins):'
                 size_hint: (1, None)
-                height: 30
+                height: 120
             TextInput:
                 id: task_duration
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             Label:
                 text: 'Enter number of repeats:'
                 size_hint: (1, None)
-                height: 30
+                height: 120
             TextInput:
                 id: task_times
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             
 
         GridLayout:
             rows: 1
             size_hint: (1, None)
-            height: 50
+            height: 200
 
             Button:
                 text: "Add task"
@@ -159,29 +165,35 @@
             Label:
                 text: 'Name:'
                 size_hint: (1, None)
-                height: 30
+                height: 120
             TextInput:
                 id: task_name
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             Label:
                 text: 'Duration (mins):'
                 size_hint: (1, None)
-                height: 30
+                height: 120
             TextInput:
                 id: task_duration
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             Label:
                 text: 'Number of repeats:'
                 size_hint: (1, None)
-                height: 30
+                height: 120
             TextInput:
                 id: task_times
                 multiline: False
+                size_hint: (1, None)
+                height: 200
             
         GridLayout:
             rows: 1
             size_hint: (1, None)
-            height: 50
+            height: 200
 
             Button:
                 text: "Save changes"
@@ -217,7 +229,7 @@
             id: buttons_inder_timer
             rows: 1
             size_hint: (1, None)
-            height: 50
+            height: 200
 
             Button:
                 text: "Finish task"
@@ -244,7 +256,7 @@
         Label:
             text: "Settings"
             size_hint: (1, None)
-            height: 30
+            height: 120
         
         GridLayout:
             id: setting_buttons
@@ -261,7 +273,7 @@
             id: back_buttons
             rows: 1
             size_hint: (1, None)
-            height: 50
+            height: 120
 
             Button:
                 text: "Back"
